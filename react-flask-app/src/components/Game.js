@@ -4,6 +4,7 @@ function Game() {
     const [currentPlayer, setCurrentPlayer] = useState("X");
     const [gameOver, setGameOver] = useState(false);
     const [currentBoard, setCurrentBoard] = useState(new Array(9));
+    const [moveCount, setMoveCount] = useState(0); 
 
     function toggleCurrentPlayer(){
         if(currentPlayer === ("X")) {
@@ -51,10 +52,15 @@ function Game() {
 
             let check = checkIfGameOver(newBoard);
 
+            if(moveCount == 9) {
+                alert("Looks like a Draw! Please try play again if you want to...")
+            } 
+
             if(check === true) {
                 setGameOver(true)
             } else {
-                toggleCurrentPlayer();            
+                toggleCurrentPlayer();        
+                setMoveCount(moveCount + 1)    
             }
 
         } else {
@@ -87,6 +93,12 @@ function Game() {
             return (
                 <div>
                 <p>{currentPlayer} Wins!</p>
+                </div>
+            );
+        } else if (moveCount > 8) {
+            return (
+                <div>
+                <p>We have a Draw!</p>
                 </div>
             );
         } else {

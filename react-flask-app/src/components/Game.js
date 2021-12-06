@@ -1,10 +1,37 @@
 import React, { useState, useEffect } from 'react';
+import { withAuthenticator } from '@aws-amplify/ui-react'
+import '@aws-amplify/ui-react/styles.css';
+import { API, Auth } from 'aws-amplify'
+import '../App.css';
+import { Link } from "react-router-dom";
 
-function Game() {
+function Game({ signOut, user }) {
     const [currentPlayer, setCurrentPlayer] = useState("X");
     const [gameOver, setGameOver] = useState(false);
     const [currentBoard, setCurrentBoard] = useState(new Array(9));
     const [moveCount, setMoveCount] = useState(0); 
+
+    // useEffect(() => {
+    //     fetch('https://mqsejae34a.execute-api.us-east-1.amazonaws.com/dev').then(res => res.json()).then(data => {
+    //         console.log({data);
+    //     });
+    // }, []);
+
+    // async function callApi(){
+    //     const user = await Auth.currentAuthenticatedUser()
+    //     const token = user.signInUserSession.idToken.jwtToken
+
+    //     console.log({token})
+
+    //     const requestInfo = {
+    //         headers: {
+    //             Authorization: token
+    //         }
+    //     }
+
+    //     const data = await API.get('ticTacToeUsersApi', '/users', requestInfo)
+    //     console.log({data})
+    // }
 
     function toggleCurrentPlayer(){
         if(currentPlayer === ("X")) {
@@ -111,7 +138,20 @@ function Game() {
     }
 
     return(
-      <div>
+        <div className="App">
+    
+      <header className="App-header">
+        <p><Link to="/">Home</Link></p>
+
+        <h1>Hello {user.username}</h1>
+      <button onClick={signOut}>Sign out</button>
+
+
+          <h1>Tic Tac Toe</h1>
+
+          {/* <button onClick={callApi}>Call API</button> */}
+
+
           {renderPlayerGameOverInfo()}
           <table>
             <tbody>
@@ -132,8 +172,9 @@ function Game() {
                 </tr>
             </tbody>
         </table>
+        </header>
       </div>
     )
   }
 
-export default Game;
+export default withAuthenticator(Game);
